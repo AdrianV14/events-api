@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.gestion.eventos.api.domain.Event;
-import com.gestion.eventos.api.dto.EventRequestDto;
 import com.gestion.eventos.api.exception.ResourceNotFoundException;
 import com.gestion.eventos.api.repository.IEventRepository;
 
