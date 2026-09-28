@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +32,7 @@ public class EventController {
     private final IEventMapper eventMapper;
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<List<EventResponseDto>> getAllEvents() {
         List<Event> events = eventService.findAll();
         List<EventResponseDto> responseDtos = eventMapper.toEventResponseDtosList(events);
@@ -38,6 +40,7 @@ public class EventController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<EventResponseDto> getEventById(@PathVariable Long id) {
         Event event = eventService.findById(id);
         EventResponseDto responseDto = eventMapper.toResponseDto(event);
@@ -45,6 +48,7 @@ public class EventController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<EventResponseDto> createEvent(@Valid @RequestBody EventRequestDto requestDto) {
         Event eventToSave = eventMapper.toEntity(requestDto);
         Event eventSaved = eventService.save(eventToSave);
@@ -53,6 +57,7 @@ public class EventController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<EventResponseDto> updateEvent(@PathVariable Long id,
             @Valid @RequestBody EventRequestDto requestDto) {
 
@@ -64,6 +69,7 @@ public class EventController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Void> deleteEvent(@PathVariable Long id) {
         eventService.deleteById(id);
         return ResponseEntity.noContent().build();

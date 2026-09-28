@@ -18,4 +18,5 @@ public interface IEventMapper {
     EventResponseDto toResponseDto(Event event);
 
     void updateEventFromDto(EventRequestDto dto, @MappingTarget Event event);
+
 }
