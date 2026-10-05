@@ -1,8 +1,7 @@
-package com.gestion.eventos.api.security;
+package com.gestion.eventos.api.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -40,8 +39,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> 
                     auth
                         .requestMatchers("/api/v1/auth/**").permitAll() //Todas las rutas Auth estan habilitadas para poder autenticarnos
+                        .requestMatchers("/h2-console/**").permitAll() //Todas las rutas Auth estan habilitadas para poder autenticarnos
                         .anyRequest().authenticated()   // El resto necesita autenticacion
-                );
+                )
+                .headers(AbstractHttpConfigurer::disable);  //Configuracion necesaria para el uso de H2
         
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);  //Inserta un filtro personalizado
 

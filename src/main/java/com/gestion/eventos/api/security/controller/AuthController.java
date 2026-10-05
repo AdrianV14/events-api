@@ -1,4 +1,4 @@
-package com.gestion.eventos.api.controller;
+package com.gestion.eventos.api.security.controller;
 
 import java.util.Collections;
 
@@ -18,12 +18,12 @@ import lombok.RequiredArgsConstructor;
 
 import com.gestion.eventos.api.domain.Role;
 import com.gestion.eventos.api.domain.User;
-import com.gestion.eventos.api.dto.JwtAuthReponseDto;
-import com.gestion.eventos.api.dto.LoginDto;
-import com.gestion.eventos.api.dto.RegisterDto;
-import com.gestion.eventos.api.mapper.IUserMapper;
+import com.gestion.eventos.api.mapper.UserMapper;
 import com.gestion.eventos.api.repository.IRoleRepository;
 import com.gestion.eventos.api.repository.IUserRepository;
+import com.gestion.eventos.api.security.dto.JwtAuthReponseDto;
+import com.gestion.eventos.api.security.dto.LoginDto;
+import com.gestion.eventos.api.security.dto.RegisterDto;
 import com.gestion.eventos.api.security.jwt.JwtGenerator;
 
 @RestController
@@ -33,9 +33,8 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtGenerator jwtGenerator;
     private final IUserRepository userRepository;
-    private final IRoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
-    private final IUserMapper userMapper;
+    private final UserMapper userMapper;
 
     @PostMapping("/login")
     public ResponseEntity<JwtAuthReponseDto> authenticateUser(@RequestBody LoginDto loginDto) {
@@ -62,11 +61,6 @@ public class AuthController {
         User user = userMapper.registerDtoToUser(registerDto);
 
         user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
-
-        Role roles = roleRepository.findByName("ROLE_USER")
-                .orElseThrow(() -> new RuntimeException("Error, el rol de usuario no existe"));
-        
-        user.setRoles(Collections.singleton(roles));
 
         userRepository.save(user);
         return new ResponseEntity<>("Usuario registrado...", HttpStatus.CREATED);
