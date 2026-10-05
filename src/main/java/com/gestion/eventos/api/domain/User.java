@@ -29,11 +29,29 @@ public class User {
     private String email;
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL) //EAGER Carga automaticamente los roles al consoltar el usuario, importante si los datos de otra tabla siempre son necesarios
     @JoinTable(
         name = "users_roles", 
-        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), 
+        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), //Si usa 'referencedColumnName' se indica el campo de nuestra entidad con el que se relacionara, en este caso 'id'
         inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
     )
     private Set<Role> roles = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+        name = "users_attended_events",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "event_id")
+    )
+    private Set<Event> attendedEvents = new HashSet<>();
+
+    public void addAttendedEvent(Event event){
+        this.attendedEvents.add(event);
+        event.getAttendees().add(this);
+    }
+
+    public void removeAttendedEvent(Event event){
+        this.attendedEvents.remove(event);
+        event.getAttendees().remove(this);
+    }
 }
