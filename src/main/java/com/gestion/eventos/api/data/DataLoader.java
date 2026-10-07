@@ -8,9 +8,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.gestion.eventos.api.domain.Role;
+import com.gestion.eventos.api.domain.Speaker;
 import com.gestion.eventos.api.domain.User;
+import com.gestion.eventos.api.domain.Category;
 import com.gestion.eventos.api.repository.IRoleRepository;
+import com.gestion.eventos.api.repository.ISpeakerRepository;
 import com.gestion.eventos.api.repository.IUserRepository;
+import com.gestion.eventos.api.repository.ICategoryRepository;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +26,8 @@ public class DataLoader implements CommandLineRunner {
     private final IUserRepository userRepository;
     private final IRoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ICategoryRepository categoryReponsitory;
+    private final ISpeakerRepository speakerRepository;
 
     @Override
     @Transactional
@@ -54,7 +60,7 @@ public class DataLoader implements CommandLineRunner {
             userRepository.save(admin);
         }
 
-        if(userRepository.findByUsername("user").isEmpty()){
+        if (userRepository.findByUsername("user").isEmpty()) {
             User user = new User();
             user.setName("Usuario normal");
             user.setUsername("user");
@@ -68,6 +74,30 @@ public class DataLoader implements CommandLineRunner {
 
             userRepository.save(user);
         }
+
+        if(!categoryReponsitory.existsByName("Conferencia")){
+            Category conferencia = new Category(null, "Conferencia", "Eventos de gran escala con múltiples oradores.");
+            categoryReponsitory.save(conferencia);
+        }
+        if(!categoryReponsitory.existsByName("Taller")){
+            Category taller = new Category(null, "Taller", "Eventos interactivos y prácticos.");
+            categoryReponsitory.save(taller);
+        }
+        if(!categoryReponsitory.existsByName("Webinar")){
+            Category webinar = new Category(null, "Webinar", "Seminario online en vivo.");
+            categoryReponsitory.save(webinar);
+        }
+        
+
+        if(!speakerRepository.existsByEmail("john.doe@example.com")){
+            Speaker john = new Speaker(null, "John Doe", "john.doe@example.com", "Experto en desarrollo de software.", new HashSet<>());
+            speakerRepository.save(john);
+        }
+        if(!speakerRepository.existsByEmail("jane.smith@example.com")){
+            Speaker jane = new Speaker(null, "Jane Smith", "jane.smith@example.com", "Especialista en marketing digital.", new HashSet<>());
+            speakerRepository.save(jane);
+        }
+        
     }
 
 }
