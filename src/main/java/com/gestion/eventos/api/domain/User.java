@@ -47,11 +47,11 @@ public class User {
 
     public void addAttendedEvent(Event event){
         this.attendedEvents.add(event);
-        event.getAttendees().add(this);
+        event.getAttendedUsers().add(this);
     }
 
     public void removeAttendedEvent(Event event){
         this.attendedEvents.remove(event);
-        event.getAttendees().remove(this);
+        event.getAttendedUsers().remove(this);
     }
 }

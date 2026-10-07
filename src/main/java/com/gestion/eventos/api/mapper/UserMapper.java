@@ -1,6 +1,7 @@
 package com.gestion.eventos.api.mapper;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -9,6 +10,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.gestion.eventos.api.dto.UserResponseDto;
 import com.gestion.eventos.api.domain.User;
 import com.gestion.eventos.api.exception.ResourceNotFoundException;
 import com.gestion.eventos.api.repository.IRoleRepository;
@@ -26,6 +28,7 @@ public abstract class UserMapper {
     @Mapping(target = "password", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "roles", source = "registerDto.roles", qualifiedByName = "mapRoleStringsToRoles")
+    @Mapping(target = "attendedEvents", ignore = true)
     public abstract User registerDtoToUser(RegisterDto registerDto);
 
     
@@ -47,4 +50,7 @@ public abstract class UserMapper {
                     ))
             .collect(Collectors.toSet());
     }
+    
+    public abstract UserResponseDto toUserResponseDto(User user);
+    public abstract List<UserResponseDto> toDto(List<User> user);
 }
