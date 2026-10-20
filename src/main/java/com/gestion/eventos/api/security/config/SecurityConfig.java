@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> 
                     auth
                         .requestMatchers("/api/v1/auth/**").permitAll() //Todas las rutas Auth estan habilitadas para poder autenticarnos
-                        .requestMatchers("/h2-console/**").permitAll() //Todas las rutas Auth estan habilitadas para poder autenticarnos
+                        .requestMatchers("/h2-console/**").permitAll() //Todas las rutas h2 estan habilitadas para poder usar la consola
                         .anyRequest().authenticated()   // El resto necesita autenticacion
                 )
                 .headers(AbstractHttpConfigurer::disable);  //Configuracion necesaria para el uso de H2

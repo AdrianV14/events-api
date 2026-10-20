@@ -3,6 +3,8 @@ package com.gestion.eventos.api.mapper;
 import com.gestion.eventos.api.dto.CategoryDto;
 import com.gestion.eventos.api.domain.Category;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface CategoryMapper {
