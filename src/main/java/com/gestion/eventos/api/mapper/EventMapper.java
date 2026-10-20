@@ -12,14 +12,18 @@ import com.gestion.eventos.api.dto.EventResponseDto;
 import com.gestion.eventos.api.dto.EventSummaryDto;
 
 @Mapper(componentModel = "spring")
-public interface IEventMapper {
+public interface EventMapper {
     //Mapeo para la entrada - Request Dto
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "category", ignore = true)
     @Mapping(target = "speakers", ignore = true)
     @Mapping(target = "attendedUsers", ignore = true)
     Event toEntity(EventRequestDto eventRequestDto);
     
     //Mapeo para la salida - Response Dto
+    @Mapping(target = "categoryId", source = "category.id")
+    @Mapping(target = "categoryName", source = "category.name")
+    @Mapping(target = "speakers", source = "speakers")
     EventResponseDto toResponseDto(Event event);
 
     List<EventResponseDto> toEventResponseDtosList(List<Event> events);

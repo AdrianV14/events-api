@@ -1,6 +1,7 @@
 package com.gestion.eventos.api.dto;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -16,4 +17,9 @@ public class EventRequestDto {
     
     @NotBlank(message = "El ubicación del evento no puede estar vacía.")
     private String location;
+
+    @NotNull(message = "La categoria es obligatoria.")
+    private Long categoryId;
+
+    private Set<Long> speakersIds;
 }
